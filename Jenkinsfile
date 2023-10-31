@@ -19,9 +19,17 @@ stages {
       sh "mvn clean package"
     } }
 
-    stage("Test Application") {
+  stage("Test Application") {
     steps {
       sh "mvn test"
+    } }
+  stage("SonarQube Analysis") {
+    steps {
+      script {
+        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-tokan') {
+          sh "mvn sonar:sonar"
+        }
+      }
     } }
     
  }
